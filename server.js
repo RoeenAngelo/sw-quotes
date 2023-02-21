@@ -4,14 +4,17 @@ const PORT = 3000
 const bodyParser = require('body-parser')
 const { query } = require('express')
 const MongoClient = require('mongodb').MongoClient
-const connectionString = 'mongodb+srv://roeen:mongodb@star-wars-cluster.cpgknpx.mongodb.net/?retryWrites=true&w=majority'
 const cors = require('cors')
+require ('dotenv').config()
 
+let db,
+    dbConnectionStr = process.env.DB_STRING,
+    dbName = 'Quotes Collection'
 
 // MongoDB Setup
-MongoClient.connect(connectionString)
+MongoClient.connect(dbConnectionStr)
     .then(client => {
-        console.log('Connected to Database')
+        console.log(`Connected to ${dbName} database`)
         const db = client.db('star-wars-quotes') //Renamed the db to star-wars-quotes
 
         const quotesCollection = db.collection('quotes') //This is the variable for our quotes collection. For reusability
@@ -70,7 +73,7 @@ MongoClient.connect(connectionString)
         // Delete Darth Vader's quote
         app.delete('/quotes', (req, res) => {
             quotesCollection.deleteOne(
-                {author: req.body.author}, 
+                {author: req.body.author} 
             )
             .then(result => {
                 if(result.deletedCount === 0){
@@ -85,13 +88,21 @@ MongoClient.connect(connectionString)
         // Delete a Quote
         app.delete('/deleteQuote', (req, res) => {
             quotesCollection.deleteOne(
-                {author: req.body.author},
+                {author: req.body.author}
             )
             .then(result => {
-                console.log('Quote Deleted');
+                console.log('Quote Deleted')
+                console.log(req.body.author);
                 res.json(`Quote was deleted`)
             })
             .catch(error => console.error(error))
+        })
+
+        // Add one like
+        app.put('/addOneLike', (req, res) => {
+            quotesCollection.updateOne(
+
+            )
         })
 
         
