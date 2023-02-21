@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const { query } = require('express')
 const MongoClient = require('mongodb').MongoClient
 const connectionString = 'mongodb+srv://roeen:mongodb@star-wars-cluster.cpgknpx.mongodb.net/?retryWrites=true&w=majority'
+const cors = require('cors')
 
 
 // MongoDB Setup
@@ -17,6 +18,9 @@ MongoClient.connect(connectionString)
 
         // EJS --- Must be placed before app.use, app.get, or app.post
         app.set('view engine', 'ejs')
+
+        // Enables us to use font-awesome
+        app.use(cors())
 
         // BodyParser --- Make sure to put body-parser before the CRUD handlers
         app.use(bodyParser.urlencoded({extended : true}))
@@ -48,10 +52,10 @@ MongoClient.connect(connectionString)
             console.log(req.body);
 
             quotesCollection.findOneAndUpdate(
-                {name: 'Yoda'},
+                {author: 'Yoda'},
                 {
                     $set: {
-                    name: req.body.name,
+                    author: req.body.author,
                     quote: req.body.quote
                     }
                 },
@@ -63,15 +67,29 @@ MongoClient.connect(connectionString)
             .catch(error => console.error(error))           
         })
 
+        // Delete Darth Vader's quote
         app.delete('/quotes', (req, res) => {
             quotesCollection.deleteOne(
-                {name: req.body.name}, 
+                {author: req.body.author}, 
             )
             .then(result => {
                 if(result.deletedCount === 0){
                     return res.json('No quote to delete')
                 }
                 res.json(`Deleted Darth Vader's quote`)
+            })
+            .catch(error => console.error(error))
+        })
+        
+
+        // Delete a Quote
+        app.delete('/deleteQuote', (req, res) => {
+            quotesCollection.deleteOne(
+                {author: req.body.author},
+            )
+            .then(result => {
+                console.log('Quote Deleted');
+                res.json(`Quote was deleted`)
             })
             .catch(error => console.error(error))
         })

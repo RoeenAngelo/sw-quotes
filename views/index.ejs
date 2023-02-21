@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="main.js" defer></script>
+    <!-- <link rel="stylesheet" href="https://kit.fontawesome.com/ac2d4a9c2c.css" crossorigin="anonymous"> -->
+    <script src="https://kit.fontawesome.com/ac2d4a9c2c.js" crossorigin="anonymous"></script>
     <title>Star Was Quote App</title>
 </head>
 <body>
@@ -15,7 +17,7 @@
     <!-- The action route must match with our app.post route -->
     <!-- The name on the input section will be composed of the request body(object) which has the name and quote properties -->
     <form action="/quotes" method="POST"> 
-        <input type="text" placeholder="name" name="name"> 
+        <input type="text" placeholder="author" name="author"> 
         <input type="text" placeholder="quote" name="quote">
         <button type="submit">Submit</button>
     </form>
@@ -26,10 +28,13 @@
         <!-- Loop through quotes -->
         <% for(i = 0; i < quotes.length; i++) {%> 
           <li class="quote">
-            <!-- Output name from the iterated quote object -->
-            <span><%= quotes[i].name %></span>:
+            <!-- Output author from the iterated quote object -->
+            <span><%= quotes[i].author %></span> :
             <!-- Output quote from the iterated quote object -->
             <span><%= quotes[i].quote %></span>
+            <span>0</span>
+            <i class="fa fa-thumbs-up"></i>
+            <i class="fa fa-trash"></i>
           </li>
         <% } %>
     </ul>

@@ -8,7 +8,7 @@ update.addEventListener('click', () => {
         method: 'put',
         headers: {'content-type': 'application/json'},
         body: JSON.stringify({
-            name: 'Darth Vader',
+            author: 'Darth Vader',
             quote: 'I find your lack of faith disturbing.'
         })
     })
@@ -33,7 +33,7 @@ deleteButton.addEventListener('click', () => {
         method: 'delete',
         headers: {'content-type': 'application/json'},
         body: JSON.stringify({
-            name: 'Darth Vader'
+            author: 'Darth Vader'
         })
     })
     .then(res => {
@@ -54,3 +54,32 @@ deleteButton.addEventListener('click', () => {
 })
 
 
+// Delete Quote and Update Likes --- different way using async await with try/catch
+
+const like = document.querySelectorAll('.fa-thumbs-up')
+const deleteText = document.querySelectorAll('.fa-trash')
+
+
+deleteText.forEach(element => {
+    element.addEventListener('click', deleteQuote)
+});
+
+async function deleteQuote() {
+    const authorHere = this.parentNode.childNodes[1].innerText
+    const quoteHere = this.parentNode.childNodes[2].innerText
+    try {
+        const response = await fetch('/deleteQuote', {
+            method: 'delete',
+            headers: {'content-type' : 'application/json'},
+            body: JSON.stringify({
+                'author' : 'authorHere',
+                'quote' : 'quoteHere'
+            })
+        })
+        const data = await response.json()
+        location.reload()
+    }
+    catch (error) {
+        console.error(error);
+    }
+}
