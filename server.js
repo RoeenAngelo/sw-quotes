@@ -11,8 +11,9 @@ const connectionString = 'mongodb+srv://roeen:mongodb@star-wars-cluster.cpgknpx.
 MongoClient.connect(connectionString)
     .then(client => {
         console.log('Connected to Database')
-        const db = client.db('star-wars-quotes')
-        const quotesCollection = db.collection('quotes')
+        const db = client.db('star-wars-quotes') //Renamed the db to star-wars-quotes
+
+        const quotesCollection = db.collection('quotes') //This is the variable for our quotes collection. For reusability
 
         // EJS --- Must be placed before app.use, app.get, or app.post
         app.set('view engine', 'ejs')
@@ -29,16 +30,16 @@ MongoClient.connect(connectionString)
         app.get('/', (req, res) => {
             quotesCollection.find().toArray()
                 .then(results => {
-                    // console.log(results);
                     res.render('index.ejs',{quotes: results})
                 })
                 .catch(error => console.error(error))
         })
 
+        // The route must match with the action route on the form in the EJS
         app.post('/quotes', (req, res) => { 
             quotesCollection.insertOne(req.body)
             .then(result => {
-                res.redirect('/')
+                res.redirect('/') //This refreshes the page and goes back to the root and triggers a .get() request
             })
             .catch(error => console.error(error))
         })
