@@ -14,7 +14,7 @@ let db,
 // MongoDB Setup
 MongoClient.connect(dbConnectionStr)
     .then(client => {
-        console.log(`Connected to ${dbName} database`)
+        console.log(`Connected to ${dbName} Database`)
         const db = client.db('star-wars-quotes') //Renamed the db to star-wars-quotes
 
         const quotesCollection = db.collection('quotes') //This is the variable for our quotes collection. For reusability
@@ -26,7 +26,9 @@ MongoClient.connect(dbConnectionStr)
         app.use(cors())
 
         // BodyParser --- Make sure to put body-parser before the CRUD handlers
-        app.use(bodyParser.urlencoded({extended : true}))
+        // app.use(bodyParser.urlencoded({extended : true}))
+        // BodyParser has been deprecated, so we use the one below instead
+        app.use(express.urlencoded({extended : true}))
 
         // Express.static middleware -- this will take care of our public folder files e.g. css, client side JS, images, and fonts
         app.use(express.static('public'))
@@ -62,7 +64,7 @@ MongoClient.connect(dbConnectionStr)
                     quote: req.body.quote
                     }
                 },
-                {upsert: true}
+                {upsert: true} //Creates a document if there is nothing there to update.
             )
             .then(result => {
                 res.json('Success')
@@ -88,7 +90,7 @@ MongoClient.connect(dbConnectionStr)
         // Delete a Quote
         app.delete('/deleteQuote', (req, res) => {
             quotesCollection.deleteOne(
-                {author: req.body.author}
+                {author: req.body.itemFromJS}
             )
             .then(result => {
                 console.log('Quote Deleted')
@@ -109,11 +111,6 @@ MongoClient.connect(dbConnectionStr)
         app.listen(process.env.PORT || PORT, console.log(`THE SERVER IS RUNNING ON PORT ${PORT}`))
     })
     .catch(error => console.error(error))
-
-
-
-
-
 
 
 

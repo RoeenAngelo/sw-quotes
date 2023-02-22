@@ -58,32 +58,51 @@ deleteButton.addEventListener('click', () => {
 
 const deleteText = document.querySelectorAll('.fa-trash')
 
-
-deleteText.forEach(e => {
-    e.addEventListener('click', deleteQuote)
+deleteText.forEach((element) => {
+    element.addEventListener('click', deleteQuote)
 });
 
-async function deleteQuote() {
-    const authorHere = this.parentNode.childNodes[1].innerText
-    const quoteHere = this.parentNode.childNodes[3].innerText
-    console.log(authorHere);
-    try {
+async function deleteQuote(){
+    const itemText = this.parentNode.childNodes[1].innerText
+    try{
         const response = await fetch('deleteQuote', {
             method: 'delete',
-            headers: {'content-type' : 'application/json'},
+            headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                author : 'authorHere',
-                quote : 'quoteHere'
+              itemFromJS: itemText
             })
-        })
+          })
         const data = await response.json()
-        console.log(data);
+        console.log(data)
         location.reload()
-    }
-    catch (error) {
-        console.error(error);
+
+    }catch(err){
+        console.log(err)
     }
 }
+
+
+
+// async function deleteQuote() {
+//     const authorHere = this.parentNode.childNodes[1].innerText
+//     const quoteHere = this.parentNode.childNodes[3].innerText
+//     try {
+//         const response = await fetch('/deleteQuote', {
+//             method: 'delete',
+//             headers: {'content-type' : 'application/json'},
+//             body: JSON.stringify({
+//                 author : 'authorHere',
+//                 quote : 'quoteHere'
+//             })
+//         })
+//         const data = await response.json()
+//         console.log(data);
+//         location.reload()
+//     }
+//     catch (error) {
+//         console.error(error);
+//     }
+// }
 
 
 // Update Like
@@ -95,5 +114,5 @@ like.forEach(e => {
 })
 
 async function addLike() {
-
+    
 }

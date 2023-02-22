@@ -27,10 +27,8 @@
     <ul class="quotes">
         <!-- Loop through quotes -->
         <% for(i = 0; i < quotes.length; i++) {%> 
-          <li class="quote">
-            <!-- Output author from the iterated quote object -->
+          <li class="quote">   
             <span><%= quotes[i].author %></span> :
-            <!-- Output quote from the iterated quote object -->
             <span><%= quotes[i].quote %></span>
             <span>0</span>
             <i class="fa fa-thumbs-up"></i>
